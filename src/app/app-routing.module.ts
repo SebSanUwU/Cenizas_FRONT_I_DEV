@@ -15,22 +15,13 @@ import { MsalGuard } from '@azure/msal-angular';
 const routes: Routes = [
   { path: "", component: HomeComponent, pathMatch: 'full' },
   {
-    path: "host", component: HostComponent,
-    canActivate: [
-      MsalGuard
-    ]
+    path: "host", component: HostComponent
   },
   {
-    path: "buscar-sala", component: SearchComponent,
-    canActivate: [
-      MsalGuard
-    ]
+    path: "buscar-sala", component: SearchComponent
   },
   {
-    path: "sala-espera", component: WaitRoomComponent,
-    canActivate: [
-      MsalGuard
-    ]
+    path: "sala-espera", component: WaitRoomComponent
   },
   { path: "lobby", component: GameComponent },
   { path: "**", component: PagenotfoundComponent }
