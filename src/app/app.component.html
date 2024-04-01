@@ -1,1 +1,12 @@
-<router-outlet />
+<nav class="navbar navbar-dark bg-dark">
+  <div class="container">
+    <a class="navbar-brand" href="#">CENIZAS DEL PASADO</a>
+    <div>
+      <button *ngIf="!loginDisplay" class="btn btn-secondary" (click)="login()">Sign In</button>
+      <button *ngIf="loginDisplay" class="btn btn-secondary" (click)="logout()">Sign Out</button>
+    </div>
+  </div>
+</nav>
+<div>
+	<router-outlet></router-outlet>
+</div>

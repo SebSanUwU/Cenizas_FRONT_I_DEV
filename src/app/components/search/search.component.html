@@ -1,24 +1,24 @@
-<form class="container mt-5">
-    <!-- Lista de salas -->
-    <ul class="list-group mb-3">
-        <li *ngFor="let room of rooms" class="list-group-item">
-            <div class="d-flex justify-content-between align-items-center">
-                <div>
-                    <p class="mb-0"><strong>Nombre del Servidor:</strong> {{ room.server_name }}</p>
-                    <p class="mb-0"><strong>Código:</strong> {{ room.code }}</p>
+<div class="principal center-container">
+    <form class="container mt-5">
+        <ul class="list-group mb-5">
+            <li *ngFor="let room of rooms" class="list-group-item">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <p class="mb-0"><strong>Nombre del Servidor:</strong> {{ room.server_name }}</p>
+                        <p class="mb-0"><strong>Código:</strong> {{ room.code }}</p>
+                    </div>
+                    <button class="btn btn-primary" (click)="joinRoom(room.code)">Unirse</button>
                 </div>
-                <button class="btn btn-primary" (click)="joinRoom(room.code)">Unirse</button>
-            </div>
-        </li>
-    </ul>
-
-    <!-- Formulario para crear una nueva sala -->
-    <form class="form-group mb-3" (ngSubmit)="createRoom(server_name)" #form="ngForm">
-        <label class="form-label" for="server_name">Nombre del Servidor</label>
-        <input class="form-control" type="text" id="server_name" name="server_name" [(ngModel)]="server_name" required>
-        <button class="btn btn-primary mt-3" type="submit">Crear Sala</button>
+            </li>
+        </ul>
+        <form class="form-group mb-3" (ngSubmit)="createRoom(server_name)" #form="ngForm">
+            <label class="form-label display-4" for="server_name">Nombre del Servidor</label>
+            <input class="form-control" type="text" id="server_name" name="server_name" [(ngModel)]="server_name" required>
+            <button class="btn btn-primary mt-3" type="submit">Crear Sala</button>
+        </form>
     </form>
-</form>
+</div>
+
 
 
 

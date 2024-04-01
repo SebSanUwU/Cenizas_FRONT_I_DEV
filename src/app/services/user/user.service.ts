@@ -1,8 +1,8 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { user } from 'src/app/JsonType/user';
-import { sesion } from 'src/app/JsonType/sesion';
+import { UserJson } from 'src/app/schemas/UserJson';
+
 
 
 @Injectable({
@@ -20,8 +20,8 @@ export class UserService {
     return this.http.post<any>(this.userUrlApi + "/create", null, {params:params});
   }
   
-
-  startSession(correo:string):Observable<user>{
-    return  this.http.get<user>(this.userUrlApi+"/"+correo);
+  getUser(correo:string):Observable<any>{
+    return  this.http.get<any>(this.userUrlApi+"/"+correo);
   }
+
 }

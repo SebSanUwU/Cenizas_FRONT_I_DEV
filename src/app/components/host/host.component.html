@@ -1,0 +1,29 @@
+<div class="principal center-container">
+    <div class="container">
+        <!-- <form class="form-group mb-3" (ngSubmit)="createRoom(server_name)" #form="ngForm">
+            <label class="form-label display-4" for="server_name">Nombre del Servidor</label>
+            <input class="form-control" type="text" id="server_name" name="server_name" [(ngModel)]="server_name" required>
+            <button class="btn btn-primary mt-3" type="submit">Crear Sala</button>
+        </form> -->
+    </div>
+    <div class="container">
+        <h1>Salas Creadas:</h1>
+        <div class="profile">
+            <p><strong>Business Phones:</strong> {{profile?.businessPhones}}</p>
+            <p><strong>Display Name:</strong> {{profile?.displayName}}</p>
+            <p><strong>Given Name:</strong> {{profile?.givenName}}</p>
+            <p><strong>Job Title:</strong> {{profile?.jobTitle}}</p>
+            <p><strong>Mail:</strong> {{profile?.mail}}</p>
+            <p><strong>Mobile Phone:</strong> {{profile?.mobilePhone}}</p>
+            <p><strong>Office Location:</strong> {{profile?.officeLocation}}</p>
+            <p><strong>Preferred Language:</strong> {{profile?.preferredLanguage}}</p>
+            <p><strong>Surname:</strong> {{profile?.surname}}</p>
+            <p><strong>User Principal Name:</strong> {{profile?.userPrincipalName}}</p>
+            <p><strong>Profile Id:</strong> {{profile?.id}}</p>
+            <br><br>
+            <p><strong>Token Expiration:</strong> {{tokenExpiration}}</p>
+            <br><br>
+            <p>Refreshing this page will continue to use the cached access token until it nears expiration, at which point a new access token will be requested.</p>
+        </div>
+    </div>
+</div>

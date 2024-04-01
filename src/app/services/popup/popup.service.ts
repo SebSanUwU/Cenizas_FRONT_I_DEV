@@ -10,6 +10,6 @@ export class PopupService {
   constructor(private dialog: MatDialog) { }
 
   openPopUp():void{
-    this.dialog.open(LogginComponent);
+    //this.dialog.open(LogginComponent);
   }
 }

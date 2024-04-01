@@ -1,15 +1,18 @@
-<div class="principal">
-  <img class="imagen" src="../../../assets/wallpapers/fondo_principal.png">
-  <br><br><br><br><br><br><br><br><br>
-  <h1 type="titulo">CENIZAS DEL PASADO</h1>
-
-  <div class="div_boton">
-      <button  class="btn btn-primary">Iniciar Sala</button>
+<div class="principal center-container">
+  <div class="d-flex justify-content-center align-items-center flex-column">
+    <div class="div_boton my-2" (click)="routeHost()">
+      <button class="btn btn-primary">Iniciar como Anfitrión</button>
     </div>
-    <div class="div_boton">
+    <div class="div_boton my-2">
       <button type="button" class="btn btn-primary" (click)="escribirCodigo()">Unirse a Sala</button>
     </div>
-    <div class="div_boton">
+    <div class="div_boton my-2">
+      <button type="button" class="btn btn-primary">Ajustes</button>
+    </div>
+    <div class="div_boton my-2">
       <button type="button" class="btn btn-primary">Salir</button>
     </div>
   </div>
+</div>
+
+

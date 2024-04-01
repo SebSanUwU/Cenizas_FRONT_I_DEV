@@ -14,11 +14,10 @@ import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { IPublicClientApplication, PublicClientApplication, InteractionType, BrowserCacheLocation, LogLevel } from '@azure/msal-browser';
 import { MsalGuard, MsalInterceptor, MsalBroadcastService, MsalInterceptorConfiguration, MsalModule, MsalService, MSAL_GUARD_CONFIG, MSAL_INSTANCE, MSAL_INTERCEPTOR_CONFIG, MsalGuardConfiguration, MsalRedirectComponent } from '@azure/msal-angular';
 
-const GRAPH_ENDPOINT = 'Enter_the_Graph_Endpoint_Herev1.0/me';
+const GRAPH_ENDPOINT = 'https://graph.microsoft.com/v1.0/me';
 
-const isIE =
-  window.navigator.userAgent.indexOf('MSIE ') > -1 ||
-  window.navigator.userAgent.indexOf('Trident/') > -1;
+const isIE =window.navigator.userAgent.indexOf('MSIE ') > -1 || window.navigator.userAgent.indexOf('Trident/') > -1;
+
 
 export function loggerCallback(logLevel: LogLevel, message: string) {
   console.log(message);

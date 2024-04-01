@@ -6,7 +6,7 @@ import { RoomJson } from 'src/app/schemas/RoomJson';
 @Component({
   selector: 'app-search',
   templateUrl: './search.component.html',
-  styleUrls: ['./search.component.css']
+  styleUrls: ['./search.component.css','../../../assets/style/main.css'] 
 })
 export class SearchComponent {
   codigoSala: string = '';

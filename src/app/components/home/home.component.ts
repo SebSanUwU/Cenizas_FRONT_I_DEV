@@ -5,7 +5,7 @@ import { PopupService } from 'src/app/services/popup/popup.service';
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
-  styleUrls: ['./home.component.css']
+  styleUrls: ['../../../assets/style/main.css']
 })
 export class HomeComponent implements OnInit{
 
@@ -29,6 +29,10 @@ export class HomeComponent implements OnInit{
 
   escribirCodigo(){
     this.router.navigate(['/buscar-sala']);
+  }
+
+  routeHost(){
+    this.router.navigate(['/host']);
   }
 
 }

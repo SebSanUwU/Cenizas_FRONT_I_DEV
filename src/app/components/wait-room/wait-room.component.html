@@ -1,15 +1,10 @@
-<div *ngIf="room" class="container mt-5">
-    <h2>Información de la Sala</h2>
+<div *ngIf="room" class="principal">
+  <div class="container mt-5">
+    <h1>Información de la Sala</h1>
     <ul class="list-group">
       <li class="list-group-item"><strong>Nombre del servidor:</strong> {{ room.server_name }}</li>
       <li class="list-group-item"><strong>Código:</strong> {{ room.code }}</li>
       <li class="list-group-item"><strong>Fecha de creación:</strong> {{ room.creation_date }}</li>
-      <li class="list-group-item">
-        <strong>Usuarios en la sala:</strong>
-        <ul class="list-group">
-          <li *ngFor="let user of room.users_in_room" class="list-group-item">{{ user }}</li>
-        </ul>
-      </li>
       <li class="list-group-item">
         <strong>Estadísticas de la sala:</strong>
         <ul class="list-group">
@@ -19,5 +14,16 @@
         </ul>
       </li>
     </ul>
+  </div>
+  <div class="container mt-5">
+    <ul class="list-group">
+      <li class="list-group-item">
+        <strong>Usuarios en la sala:</strong>
+        <ul class="list-group">
+          <li *ngFor="let user of room.users_in_room" class="list-group-item">{{ user }}</li>
+        </ul>
+      </li>
+    </ul>
+  </div>
 </div>
   
