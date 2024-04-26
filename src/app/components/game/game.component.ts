@@ -66,18 +66,26 @@ export class GameComponent implements OnInit {
           });;
         }
       });
-    this.roomService.getRoom(this.code).subscribe((room: RoomJson) => {
-      this.room = room;
-    });
-    this.route.params?.subscribe({
+    
+    this.route.queryParams?.subscribe({
       next: (params) => {
         this.code = params['code'];
         console.log('Code from route params:', this.code); // Verificar el valor de this.code
+        this.roomService.getRoom(this.code).subscribe((room: RoomJson) => {
+          this.room = room;
+          this.switchRoom(true)
+        });
         this.socket.emit('joinRoom', this.code);
+        
       },
       error: (error) => console.error('Error al obtener código de sala:', error),
-      complete: () => console.info('Obtención de código de sala completa')
+      complete: () => {
+        console.info('Obtención de código de sala completa')
+        
+      }
     });
+
+    
 
     this.socket.on('turnOffRoom', (data) => {
       console.log(`Apagame esta monda Room : ${data}`);
