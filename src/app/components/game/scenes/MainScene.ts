@@ -1,13 +1,9 @@
 import Phaser from 'phaser';
 import { Socket } from 'socket.io-client';
-import { ObjectCoollectible } from '../objects/objectCoollectible';
-import { GameComponent } from '../game.component';
-import { map } from 'rxjs';
 
 export class MainScene extends Phaser.Scene {
     keys!: any;
     solidos!: any;
-    private prueba : GameComponent | undefined;
     protected code!: string;
     protected player!: Phaser.Physics.Matter.Sprite;
     protected isKnockedDown: boolean = false;
@@ -112,8 +108,12 @@ export class MainScene extends Phaser.Scene {
         this.create_remote_players();
     }
 
+    // @ts-ignore: La creacion del mapa es necesaria de esta manera ya que la variable que se reasigna debe coincidir con el nombre del programa 'tilet' 
+    // SonarCloud no tomará en cuenta ninguna advertencia en el siguiente bloque
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     protected create_mapa(width : number, height: number, key: string, tileImage: any, tileSet: any, layerNames: any, variableName: any) {
         const mapa = this.make.tilemap({ key: key });
+        
         variableName = mapa.addTilesetImage(tileImage, tileSet);
         
         if (variableName !== null) {
@@ -128,7 +128,8 @@ export class MainScene extends Phaser.Scene {
         } 
         this.mapa = mapa;
     }
-    
+    /* eslint-enable @typescript-eslint/no-unused-vars */
+
 
     protected create_player(width: number, height: number, position_x: number, position_y: number, spray: string) {
         const newPositionX = position_x + Object.keys(this.otherSprites).length * 30;        

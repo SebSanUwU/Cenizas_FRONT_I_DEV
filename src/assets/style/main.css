@@ -17,10 +17,12 @@ label {
     width: 75%;
 }
 
-.card-title{
+/* eslint-disable @typescript-eslint/no-unused-vars */
+.card-title {
     color: #ced4dd;
     font-family: minecraft;
 }
+/* eslint-enable @typescript-eslint/no-unused-vars */
 
 
 h1 {
