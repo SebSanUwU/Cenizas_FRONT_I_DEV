@@ -1,6 +1,3 @@
-import { right } from '@popperjs/core';
-import { MainScene } from './MainScene';
-import { ObjectCoollectible } from '../objects/objectCoollectible';
 import { ScoreBoard } from '../objects/scoreBoard';
 import { DesertScene } from './DesertScene';
 
@@ -12,12 +9,44 @@ enum Direction {
 };
 
 export class CavernaScene extends DesertScene {
+    protected override startx!: number;
+    protected override starty: number = 191;
+    protected pointsInitial!: number;
+
     constructor(key: string, socket: any, code: string) {
         super(key, socket, code);
     }
 
     override init(data: any) {
-        super.init(data);
+        this.socket.connect();
+        this.code = data.code;
+        this.cantidadVida = data.cantidadVida;
+        this.heartsGroup = data.heartsGroup;
+        this.pointsInitial = data.score;
+        this.socket.emit('joinRoom', this.code);
+        this.socket.off('initialCoordinates');
+        this.socket.off('firstPlayer');
+        this.socket.off('playerNumber');
+        this.socket.off('goToCave');
+        this.socket.off('goToDesert');
+
+        this.socket.id = data.socketId;
+        this.myNumber = data.myNumber;
+
+        this.socket.on('connect', () => {
+            if (this.socket.id) {
+                this.playerId = this.socket.id;
+                this.getTurn(this.myNumber); 
+            } 
+        });   
+        
+        this.socket.on('playerDisconnected', (playerId: string) => {
+            const disconnectedPlayerSprite = this.otherSprites[playerId];
+            if (disconnectedPlayerSprite) {
+                disconnectedPlayerSprite.destroy(); 
+                delete this.otherSprites[playerId]; 
+            }
+        });
     }
 
     override preload() {
@@ -32,18 +61,19 @@ export class CavernaScene extends DesertScene {
     }
 
     override create() {
-        var caverna;
+        let caverna;
         const music = this.sound.add('cavernaMusic', { loop: true });
         const { width, height } = this.sys.game.canvas;
         music.play();
-        super.create_mapa(width, height + 380, 'caverna', 'caverna', 'caverna', ['Capa de patrones 1'],caverna);
-        super.create_player(width, height + 380,470.87098553608377, 191.45387158490442, 'player');
-        this.createLifeBar();
-        this.createGameOver();
-        this.create_remote_players();
-        this.scoreText = new ScoreBoard(this);
-        this.cameras.main.setAlpha(0);
 
+        super.create_mapa(width, height + 380, 'caverna', 'caverna', 'caverna', ['Capa de patrones 1'],caverna);
+        super.create_player(width, height + 380,this.startx, this.starty, 'player');
+        super.createLifeBar(this.cantidadVida/this.golpePorCorazon);
+        super.create_remote_players();
+        this.scoreText = new ScoreBoard(this);
+        this.scoreText.incrementScore(this.pointsInitial);
+        this.createGameOver();
+        this.cameras.main.setAlpha(0);
 
         this.tweens.add({
             targets: this.cameras.main,
@@ -51,6 +81,26 @@ export class CavernaScene extends DesertScene {
             duration: 2000,
             onComplete: () => {}
         });
-    }  
+    }
+
+    protected override getTurn(myNumber: number) {
+        switch (myNumber) {
+            case 1:
+                this.startx = 470.87098553608377;
+                break;
+            case 2:
+                this.startx = 500.87098553608377;
+                break;
+            case 3:
+                this.startx = 530.87098553608377;
+                break;
+            case 4:
+                this.startx = 560.87098553608377;
+                break;
+            default:
+                this.startx = 170; 
+                break;
+        }
+    } 
 
 }   

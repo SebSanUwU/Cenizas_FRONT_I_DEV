@@ -1,10 +1,7 @@
-import { right } from '@popperjs/core';
-
 import { ObjectCoollectible } from '../objects/objectCoollectible';
-import { Text } from '@angular/compiler';
 import { ScoreBoard } from '../objects/scoreBoard';
 import { MainScene } from './MainScene';
-import { coerceStringArray } from '@angular/cdk/coercion';
+
 
 enum Direction {
     UP,
@@ -53,7 +50,6 @@ export class DesertScene extends MainScene {
         this.socket.off('goToDesert');
         this.socket.id = data.socketId;
         this.myNumber = data.myNumber;
-        this.scoreText = new ScoreBoard(this);
         
         this.socket.on('connect', () => {
             if (this.socket.id) {
@@ -75,6 +71,10 @@ export class DesertScene extends MainScene {
             data.socketId = this.socket.id;
             data.myNumber = this.myNumber;
             data.code = this.code;
+            data.cantidadVida = this.cantidadVida;
+            data.heartsGroup = this.heartsGroup;
+            data.score = this.scoreText.getScore();
+            this.socket.off('updatePlayers');
             this.sound.stopAll();
             this.tweens.add({
                 targets: this.cameras.main,
@@ -100,13 +100,10 @@ export class DesertScene extends MainScene {
             frameWidth: 64,
             frameHeight: 64
         });
-        //this.itemsTypeCollected["Llave"] = 0;
-        //this.itemsTypeCollected["Herramienta"] = 0;
-        //this.itemsTypeCollected["Metal"] = 0;
     }
 
     override create() {
-        var desert;
+        let desert;
         const music = this.sound.add('desertMusic', { loop: true });
         const { width, height } = this.sys.game.canvas;
         music.play();
@@ -122,11 +119,10 @@ export class DesertScene extends MainScene {
             this.createSkeletons();
             this.posicionesItems = data.posicionesItems;
             this.createItems();
-            console.log(this.items);
         });
 
         super.create_player(width, height + 380, this.startx, this.starty, 'player');
-        this.createLifeBar();
+        this.createLifeBar(5);
         this.createGameOver();
         this.create_remote_players();
         this.create_animationSkeleton();
@@ -262,9 +258,9 @@ export class DesertScene extends MainScene {
     }
 
     
-    protected createLifeBar() {
+    protected createLifeBar(cantidad: number) {
         this.heartsGroup = this.add.group();
-        for (let i = 0; i < 5; i++) {
+        for (let i = 0; i < cantidad; i++) {
             const heart = this.add.image(300 + i * 20, 210, 'corazon').setScrollFactor(0);
             this.heartsGroup.add(heart);
         }
@@ -583,7 +579,7 @@ export class DesertScene extends MainScene {
         const itemIndex = this.items.indexOf(item);
         if (itemIndex !== -1) {    
             item.destroy();  
-            if (this.countItems >= 5) {
+            if (this.countItems >= 1) {
                 this.socket.emit("goToCave", {
                     mapaActual: 'DesertScene',
                     idOwner:this.socket.id,
