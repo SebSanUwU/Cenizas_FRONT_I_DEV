@@ -43,7 +43,6 @@ export class DesertScene extends MainScene {
     override init(data: any) {
         this.socket.connect();
         this.code = data.code;
-        this.socket.emit('joinRoom', this.code);
         this.socket.off('initialCoordinates');
         this.socket.off('firstPlayer');
         this.socket.off('playerNumber');

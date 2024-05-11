@@ -62,6 +62,7 @@ export class GameComponent implements OnInit {
                     this.userService.getUser(this.profile.mail).subscribe((room: UserJson) => {
                         this.user = room;
                         this.nickname= room.nickname;
+                        this.socket.emit('saveNickname',this.nickname);
                 });;
         }
      });
@@ -74,23 +75,19 @@ export class GameComponent implements OnInit {
           this.room = room;
           this.switchRoom(true)
         });
-        this.socket.emit('joinRoom', this.code)
-        this.socket.emit('saveNickname',this.nickname)
       },
       error: (error) => console.error('Error al obtener código de sala:', error),
       complete: () => {
         console.info('Obtención de código de sala completa')
+
       }
     });
     this.socket.on('turnOffRoom', (data) => {
       this.switchRoom(false)
     })
-    setTimeout(() => {
-    }, 3000); 
     this.phaserGame = new Phaser.Game(this.config);
 
   }
-  
 
   switchRoom(state: boolean) {
     if (state) {
