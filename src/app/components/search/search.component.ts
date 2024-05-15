@@ -33,7 +33,7 @@ export class SearchComponent {
       .subscribe(profile => {
         this.profile = profile;
         this.mail = this.profile.mail;
-        if (this.profile && this.profile.mail) {
+        if (this.profile?.mail ) {
           this.userService.getUser(this.profile.mail).subscribe((user: UserJson) => {
             this.user = user;
             this.friends = this.user.friends;

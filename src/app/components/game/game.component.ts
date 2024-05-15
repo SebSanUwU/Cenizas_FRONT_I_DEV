@@ -14,8 +14,6 @@ import { UserJson } from 'src/app/schemas/UserJson';
 import { environment } from 'src/environments/environment';
 import { CavernaScene } from './scenes/CavernaScene';
 
-
-
 @Component({
   selector: 'app-game',
   templateUrl: './game.component.html',
@@ -47,24 +45,25 @@ export class GameComponent implements OnInit {
       physics: {
         default: 'matter',
         matter: {
-          debug: true,
+          debug: false,
           gravity: { x: 0, y: 0 }
         }
       },
+
     };
   }
   ngOnInit() {
     this.http.get('https://graph.microsoft.com/v1.0/me')
             .subscribe(profile => {
                 this.profile = profile;
-                if (this.profile && this.profile.mail) {
-                    this.mail =  this.profile.mail;
-                    this.userService.getUser(this.profile.mail).subscribe((room: UserJson) => {
-                        this.user = room;
-                        this.nickname= room.nickname;
-                        this.socket.emit('saveNickname',this.nickname);
-                });;
-        }
+                if (this.profile?.mail) {
+                  this.mail = this.profile.mail;
+                  this.userService.getUser(this.profile.mail).subscribe((room: UserJson) => {
+                      this.user = room;
+                      this.nickname = room.nickname;
+                      this.socket.emit('saveNickname', this.nickname);
+                  });
+              }
      });
     
     this.route.queryParams?.subscribe({
@@ -74,6 +73,7 @@ export class GameComponent implements OnInit {
         this.roomService.getRoom(this.code).subscribe((room: RoomJson) => {
           this.room = room;
           this.switchRoom(true)
+          this.socket.emit('joinRoom', this.code);
         });
       },
       error: (error) => console.error('Error al obtener código de sala:', error),
@@ -85,8 +85,16 @@ export class GameComponent implements OnInit {
     this.socket.on('turnOffRoom', (data) => {
       this.switchRoom(false)
     })
+
     this.phaserGame = new Phaser.Game(this.config);
 
+  }
+  
+  startMainSceneWithTransition(){
+    const scene = this.phaserGame.scene.getScene("MainScene");
+    if(scene){
+      scene.cameras.main.fadeIn(2000);
+    }
   }
 
   switchRoom(state: boolean) {
@@ -104,4 +112,5 @@ export class GameComponent implements OnInit {
       })
     }
   }
+  
 }

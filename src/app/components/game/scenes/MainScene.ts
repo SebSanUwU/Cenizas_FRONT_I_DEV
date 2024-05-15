@@ -26,9 +26,8 @@ export class MainScene extends Phaser.Scene {
         this.code = code;
     }
 
-    init(data: any) {        
+    init(data: any) {   
         this.socket.on('connect', () => {
-            this.socket.emit('joinRoom', this.code);
             if (this.socket.id) {
                 this.playerId = this.socket.id; 
                 this.socket.on('initialCoordinates', ({ x, y }) => {
@@ -112,8 +111,7 @@ export class MainScene extends Phaser.Scene {
     // SonarCloud no tomará en cuenta ninguna advertencia en el siguiente bloque
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     protected create_mapa(width : number, height: number, key: string, tileImage: any, tileSet: any, layerNames: any, variableName: any) {
-        const mapa = this.make.tilemap({ key: key });
-        const varCopy = variableName;
+        let mapa = this.make.tilemap({ key: key });
         variableName = mapa.addTilesetImage(tileImage, tileSet);
         
         if (variableName !== null) {
@@ -176,24 +174,27 @@ export class MainScene extends Phaser.Scene {
         },);
     }
 
-    protected validAnimations(player:any, existingSprite: Phaser.Physics.Matter.Sprite) {
-        if (player.animation) {
-            if(player.key === undefined || player.key === 'dead'){
-                existingSprite.setStatic(true)
-                existingSprite.anims.play('laying');
-                existingSprite.anims.stopAfterRepeat(0);
-                return;
-            } else if (player.key === 'move_x' && player.velocityx < 0) {
-                existingSprite.setFlipX(true);
-                existingSprite.anims.play(player.animation, true);
-            } else if(player.key === 'move_x' && player.velocityx > 0){
-                existingSprite.anims.play(player.animation, true);
-                existingSprite.setFlipX(false);
-            } else{
-                existingSprite.anims.play(player.animation, true);
+    protected validAnimations(player: any, existingSprite: Phaser.Physics.Matter.Sprite) {
+        if (existingSprite && existingSprite.anims) { 
+            if (player.animation) {
+                if(player.key === undefined || player.key === 'dead'){
+                    existingSprite.setStatic(true)
+                    existingSprite.anims.play('laying');
+                    existingSprite.anims.stopAfterRepeat(0);
+                    return;
+                } else if (player.key === 'move_x' && player.velocityx < 0) {
+                    existingSprite.setFlipX(true);
+                    existingSprite.anims.play(player.animation, true);
+                } else if(player.key === 'move_x' && player.velocityx > 0){
+                    existingSprite.anims.play(player.animation, true);
+                    existingSprite.setFlipX(false);
+                } else{
+                    existingSprite.anims.play(player.animation, true);
+                }
             }
         }
     }
+    
     protected create_animation() {
         this.anims.create({
             key: 'attack_down',
@@ -289,76 +290,78 @@ export class MainScene extends Phaser.Scene {
        
 
         this.isAttacking = this.keys.space.isDown;
-        if (this.player && this.player.anims && this.player.anims.currentAnim) {
-            if (this.player.anims.currentAnim.key == 'stand_' + this.lastDirection) {
+        if (this.player?.anims?.currentAnim) {
+            if (this.player?.anims?.currentAnim.key == 'stand_' + this.lastDirection) {
             }
         }
         this.movePlayer();
-
     
     }
- protected movePlayer() {
 
-    
-    if (!this.isKnockedDown) {
-        if (this.isAttacking) {
-            this.playerVelocity.x = 0;
-            this.playerVelocity.y = 0;
-            this.player.anims.play('attack_' + this.lastDirection, true);
-        }
-
-        if (this.isAttacking) {
-            this.playerVelocity.x = 0;
-            this.playerVelocity.y = 0;
-            this.player.anims.play('attack_' + this.lastDirection, true);
-        } else {
-            if (this.keys.up.isDown) {
-                this.playerVelocity.y = -1;
-                if (this.playerVelocity.x == 0) {
-                    this.player.anims.play('up', true);
-                }
-                this.lastDirection = "up";
-            } else if (this.keys.down.isDown) {
-                this.playerVelocity.y = 1;
-                if (this.playerVelocity.x == 0) {
-                    this.player.anims.play('down', true);
-                }
-                this.lastDirection = "down";
-            } else {
-                this.playerVelocity.y = 0;
-            }
-
-            if (this.keys.left.isDown) {
-                this.player.setFlipX(true);
-                this.playerVelocity.x = -1;
-                this.player.anims.play('move_x', true);
-                this.lastDirection = "left";
-            } else if (this.keys.right.isDown) {
-                this.playerVelocity.x = 1;
-                this.player.anims.play('move_x', true);
-                this.player.setFlipX(false);
-                this.lastDirection = "right";
-            } else {
+    protected movePlayer() {
+        if (!this.isKnockedDown) { //1
+            if (this.isAttacking) { //2 
                 this.playerVelocity.x = 0;
+                this.playerVelocity.y = 0;
+                this.player.anims.play('attack_' + this.lastDirection, true);
+            }
+
+            if (this.isAttacking) { //2
+                this.playerVelocity.x = 0;
+                this.playerVelocity.y = 0;
+                this.player.anims.play('attack_' + this.lastDirection, true);
+            } else { //1
+                this.movePlayerInCascade();
+            }
+            if(this.player.anims.currentAnim?.key !== 'dead')  { //2
+                this.playerVelocity.normalize();
+                this.playerVelocity.scale(1.2);
+                this.player.setVelocity(this.playerVelocity.x, this.playerVelocity.y);
+            
+                this.socket.emit('updatePlayers', {
+                    posx: this.player.x, 
+                    posy: this.player.y, 
+                    velocityx: this.playerVelocity.x, 
+                    velocityy: this.playerVelocity.y, 
+                    animation: this.player.anims.currentAnim,
+                    key: this.player.anims.currentAnim?.key,
+                    code: this.code
+                });
             }
         }
-        if(this.player.anims.currentAnim?.key !== 'dead')  {
-            this.playerVelocity.normalize();
-            this.playerVelocity.scale(1.2);
-            this.player.setVelocity(this.playerVelocity.x, this.playerVelocity.y);
-        
-            this.socket.emit('updatePlayers', {
-                posx: this.player.x, 
-                posy: this.player.y, 
-                velocityx: this.playerVelocity.x, 
-                velocityy: this.playerVelocity.y, 
-                animation: this.player.anims.currentAnim,
-                key: this.player.anims.currentAnim?.key,
-                code: this.code
-            });
+    }
+
+    protected movePlayerInCascade() {
+        if (this.keys.up.isDown) { // 1
+            this.playerVelocity.y = -1;
+            if (this.playerVelocity.x == 0) { //2
+                this.player.anims.play('up', true);
+            }
+            this.lastDirection = "up";
+        } else if (this.keys.down.isDown) { //1
+            this.playerVelocity.y = 1;
+            if (this.playerVelocity.x == 0) { //2
+                this.player.anims.play('down', true);
+            }
+            this.lastDirection = "down";
+        } else { //1
+            this.playerVelocity.y = 0;
+        }
+
+        if (this.keys.left.isDown) { // 1
+            this.player.setFlipX(true);
+            this.playerVelocity.x = -1;
+            this.player.anims.play('move_x', true);
+            this.lastDirection = "left";
+        } else if (this.keys.right.isDown) { //1 
+            this.playerVelocity.x = 1;
+            this.player.anims.play('move_x', true);
+            this.player.setFlipX(false);
+            this.lastDirection = "right";
+        } else { // 1
+            this.playerVelocity.x = 0;
         }
     }
-}
     
 
     protected validCoordinates() {

@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AppComponent } from 'src/app/app.component';
 import { RoomJson } from 'src/app/schemas/RoomJson';
 import { RoomsService } from 'src/app/services/rooms/rooms.service';
@@ -8,7 +7,7 @@ import { RoomsService } from 'src/app/services/rooms/rooms.service';
 @Component({
   selector: 'app-wait-room',
   templateUrl: './wait-room.component.html',
-  styleUrls: ['./wait-room.component.css', '../../../assets/style/main.css'],
+  styleUrls: [ '../../../assets/style/main.css'],
   providers: [RoomsService]
 })
 export class WaitRoomComponent implements OnInit {
