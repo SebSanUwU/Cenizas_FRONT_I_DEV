@@ -19,10 +19,10 @@ label {
 
 /* eslint-disable @typescript-eslint/no-unused-vars */
 .card-title {
-    color: #ced4dd;
-    font-family: minecraft;
-}
-/* eslint-enable @typescript-eslint/no-unused-vars */
+    color: #ec4d4d;
+    font-family: minecraft, Arial, Helvetica, sans-serif;
+  }
+  /* eslint-enable @typescript-eslint/no-unused-vars */
 
 
 h1 {

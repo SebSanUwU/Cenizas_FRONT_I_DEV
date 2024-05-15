@@ -7,8 +7,6 @@ import { UserJson } from "src/app/schemas/UserJson";
 
 import { HttpClient } from '@angular/common/http';
 import { RoomJson } from "src/app/schemas/RoomJson";
-import { __values } from "tslib";
-
 
 
 @Component({
@@ -36,7 +34,7 @@ export class HostComponent implements OnInit {
         this.http.get('https://graph.microsoft.com/v1.0/me')
             .subscribe(profile => {
                 this.profile = profile;
-                if (this.profile && this.profile.mail && this.profile.displayName) {
+                if (this.profile?.mail && this.profile?.displayName) {
                     this.nickname = this.profile.displayName;
                     this.bringUserInfo(this.profile.mail)
                     this.bringUserRooms(this.profile.mail)
@@ -46,7 +44,7 @@ export class HostComponent implements OnInit {
     }
 
     createRoom(server_name: string) {
-        const type = this.roomType === "public" ? true : false;
+        const type = this.roomType === "public";
         const user = this.user.mail;
         this.roomService.createRoom(server_name, type, user).subscribe({
             next: (response) => {

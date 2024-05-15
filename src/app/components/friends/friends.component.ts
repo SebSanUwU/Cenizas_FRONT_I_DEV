@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 import { Router } from '@angular/router';
 import { UserService } from "src/app/services/user/user.service";
 import { HttpClient } from '@angular/common/http';
@@ -7,7 +7,6 @@ import { UserJson } from "src/app/schemas/UserJson";
 import { io } from 'socket.io-client';
 import { environment } from 'src/environments/environment';
 import { FriendRequest } from "src/app/schemas/FriendRequest";
-import { waitForAsync } from "@angular/core/testing";
 
 @Component({
     selector: 'app-friends',
@@ -34,7 +33,7 @@ export class FriendsComponent implements OnInit {
             this.http.get('https://graph.microsoft.com/v1.0/me').subscribe(
                 (profile: any) => {
                     this.profile = profile;
-                    if (this.profile && this.profile.mail && this.profile.displayName) {
+                    if (this.profile?.mail && this.profile?.displayName) {
                         this.nickname = this.profile.displayName;
                         const userEmail = this.profile.mail;
                         this.processUserData(userEmail);

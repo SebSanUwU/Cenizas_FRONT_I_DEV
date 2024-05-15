@@ -13,5 +13,6 @@ export class HomeComponent implements OnInit{
 
 
   ngOnInit(): void {
+    // Aqui pondria mi codigo SI TUVIERA UNO 
   }
 }
