@@ -23,7 +23,6 @@ export class CavernaScene extends DesertScene {
         this.cantidadVida = data.cantidadVida;
         this.heartsGroup = data.heartsGroup;
         this.pointsInitial = data.score;
-        this.socket.emit('joinRoom', this.code);
         this.socket.off('initialCoordinates');
         this.socket.off('firstPlayer');
         this.socket.off('playerNumber');

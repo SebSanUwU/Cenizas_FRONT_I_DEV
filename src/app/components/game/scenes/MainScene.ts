@@ -26,9 +26,9 @@ export class MainScene extends Phaser.Scene {
         this.code = code;
     }
 
-    init(data: any) {
-        
+    init(data: any) {        
         this.socket.on('connect', () => {
+            this.socket.emit('joinRoom', this.code);
             if (this.socket.id) {
                 this.playerId = this.socket.id; 
                 this.socket.on('initialCoordinates', ({ x, y }) => {
