@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { UserService } from 'src/app/services/user/user.service';
 import { ProfileType } from 'src/app/schemas/ProfileTypeJson';
-import { UserJson } from 'src/app/schemas/UserJson';
 import { io } from 'socket.io-client';
 import { environment } from 'src/environments/environment';
 import { FriendRequest } from 'src/app/schemas/FriendRequest';
