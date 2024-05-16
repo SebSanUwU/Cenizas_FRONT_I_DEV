@@ -20,6 +20,7 @@ export class CavernaScene extends DesertScene {
     override init(data: any) {
         this.socket.connect();
         this.code = data.code;
+        this.socket.emit('joinRoom', this.code); // NO BORRAR BAJO NINGUNA CIRCUNSTANCIA SI QUIERE QUE EL JUEGO SIRVA :D
         this.cantidadVida = data.cantidadVida;
         this.heartsGroup = data.heartsGroup;
         this.pointsInitial = data.score;

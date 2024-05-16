@@ -2,7 +2,6 @@ import { ObjectCoollectible } from '../objects/objectCoollectible';
 import { ScoreBoard } from '../objects/scoreBoard';
 import { MainScene } from './MainScene';
 
-
 enum Direction {
     UP,
     DOWN,
@@ -43,6 +42,7 @@ export class DesertScene extends MainScene {
     override init(data: any) {
         this.socket.connect();
         this.code = data.code;
+        this.socket.emit('joinRoom', this.code); // NO BORRAR BAJO NINGUNA CIRCUNSTANCIA SI QUIERE QUE EL JUEGO SIRVA :D
         this.socket.off('initialCoordinates');
         this.socket.off('firstPlayer');
         this.socket.off('playerNumber');
@@ -70,7 +70,6 @@ export class DesertScene extends MainScene {
             this.prepareToTransition(data, 'CavernaScene');
         });
    
-        
     }
 
     override preload() {

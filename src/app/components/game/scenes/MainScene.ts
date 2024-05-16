@@ -28,6 +28,8 @@ export class MainScene extends Phaser.Scene {
 
     init(data: any) {   
         this.socket.on('connect', () => {
+            
+            this.code = data.code;
             if (this.socket.id) {
                 this.playerId = this.socket.id; 
                 this.socket.on('initialCoordinates', ({ x, y }) => {
@@ -107,12 +109,13 @@ export class MainScene extends Phaser.Scene {
         this.create_remote_players();
     }
 
-    // @ts-ignore: La creacion del mapa es necesaria de esta manera ya que la variable que se reasigna debe coincidir con el nombre del programa 'tilet' 
-    // SonarCloud no tomará en cuenta ninguna advertencia en el siguiente bloque
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    protected create_mapa(width : number, height: number, key: string, tileImage: any, tileSet: any, layerNames: any, variableName: any) {
+    protected create_mapa(width: number, height: number, key: string, tileImage: any, tileSet: any, layerNames: any, variableName: any) {
+        // SonarCloud ignore start
+        // @ts-ignore: La creación del mapa es necesaria de esta manera ya que la variable que se reasigna debe coincidir con el nombre del programa 'tilet'
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         let mapa = this.make.tilemap({ key: key });
         variableName = mapa.addTilesetImage(tileImage, tileSet);
+        // SonarCloud ignore end
         
         if (variableName !== null) {
             layerNames.forEach((layerName: string | number) => {
@@ -126,8 +129,6 @@ export class MainScene extends Phaser.Scene {
         } 
         this.mapa = mapa;
     }
-    // eslint-enable @typescript-eslint/no-unused-vars 
-
 
     protected create_player(width: number, height: number, position_x: number, position_y: number, spray: string) {
         const newPositionX = position_x + Object.keys(this.otherSprites).length * 30;        
@@ -175,7 +176,7 @@ export class MainScene extends Phaser.Scene {
     }
 
     protected validAnimations(player: any, existingSprite: Phaser.Physics.Matter.Sprite) {
-        if (existingSprite && existingSprite.anims) { 
+        if (existingSprite?.anims) {
             if (player.animation) {
                 if(player.key === undefined || player.key === 'dead'){
                     existingSprite.setStatic(true)
@@ -292,6 +293,7 @@ export class MainScene extends Phaser.Scene {
         this.isAttacking = this.keys.space.isDown;
         if (this.player?.anims?.currentAnim) {
             if (this.player?.anims?.currentAnim.key == 'stand_' + this.lastDirection) {
+                // Intentionally empty
             }
         }
         this.movePlayer();
