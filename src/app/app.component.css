@@ -125,7 +125,7 @@ ul {
   padding-inline: 1rem 3.5rem;
 }
 
-.dropdown__subitem .dropdown__link {
+.dropdown__subitem {
   padding-inline: 1rem;
 }
 
