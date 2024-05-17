@@ -86,6 +86,7 @@ export class GameComponent implements OnInit {
       this.switchRoom(false)
     })
 
+
     this.phaserGame = new Phaser.Game(this.config);
 
   }
