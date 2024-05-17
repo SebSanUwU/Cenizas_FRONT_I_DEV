@@ -26,9 +26,8 @@ export class MainScene extends Phaser.Scene {
         this.code = code;
     }
 
-    init(data: any) {   
+    init(data: any) {  
         this.socket.on('connect', () => {
-            
             this.code = data.code;
             if (this.socket.id) {
                 this.playerId = this.socket.id; 
@@ -101,12 +100,14 @@ export class MainScene extends Phaser.Scene {
     }
 
     create() {
-        const { width, height } = this.sys.game.canvas;
-        let spaceShip;
-        this.create_mapa(width, height, 'lobby', 'spaceShip', 'space', ['negro','subcapa','solidos'], spaceShip);
-        this.create_animation();
-        this.create_player(width, height, this.startx, this.starty, 'player');      
-        this.create_remote_players();
+        setTimeout(() => {
+            const { width, height } = this.sys.game.canvas;
+            let spaceShip;
+            this.create_mapa(width, height, 'lobby', 'spaceShip', 'space', ['negro','subcapa','solidos'], spaceShip);
+            this.create_animation();
+            this.create_player(width, height, this.startx, this.starty, 'player');      
+            this.create_remote_players();
+        }, 1000);
     }
 
     protected create_mapa(width: number, height: number, key: string, tileImage: any, tileSet: any, layerNames: any, variableName: any) {
@@ -280,23 +281,25 @@ export class MainScene extends Phaser.Scene {
     }
 
     override update() {  
-        if (this.keys?.up?.isUp && 
-            this.keys?.down?.isUp && 
-            this.keys?.left?.isUp && 
-            this.keys?.right?.isUp && 
-            this.keys?.space?.isUp && 
-            !this.isKnockedDown) {
-            this.player.anims.play('stand_' + this.lastDirection, true);
-        }
-       
-
-        this.isAttacking = this.keys.space.isDown;
-        if (this.player?.anims?.currentAnim) {
-            if (this.player?.anims?.currentAnim.key == 'stand_' + this.lastDirection) {
-                // Intentionally empty
+        setTimeout(() => {
+            if (this.keys?.up?.isUp && 
+                this.keys?.down?.isUp && 
+                this.keys?.left?.isUp && 
+                this.keys?.right?.isUp && 
+                this.keys?.space?.isUp && 
+                !this.isKnockedDown) {
+                this.player.anims.play('stand_' + this.lastDirection, true);
             }
-        }
-        this.movePlayer();
+           
+    
+            this.isAttacking = this.keys.space.isDown;
+            if (this.player?.anims?.currentAnim) {
+                if (this.player?.anims?.currentAnim.key == 'stand_' + this.lastDirection) {
+                    // Intentionally empty
+                }
+            }
+            this.movePlayer();
+        }, 1000);
     
     }
 
